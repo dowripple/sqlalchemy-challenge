@@ -44,6 +44,8 @@ def welcome():
         f"<li>/api/v1.0/precipitation</li>"
         f"<li>/api/v1.0/stations</li>"
         f"<li>/api/v1.0/tobs</li>"
+        f"<li>/api/v1.0/START_DATE</li>"
+        f"<li>/api/v1.0/START_DATE/END_DATE</li>"
         f"</ul>"
     )
 
@@ -148,6 +150,30 @@ def avg_temp_start(start):
     # query to get the avg
     results = session.query(Measurement.date, func.avg(Measurement.tobs).label('Avg_Temp'), func.min(Measurement.tobs).label('Low_Temp'), func.max(Measurement.tobs).label('High_Temp')).\
         filter(Measurement.date >= start).\
+        group_by(Measurement.date).all()
+    
+    session.close()
+
+    all_data = []
+    for temp in results:
+        temp_dict = {}
+        temp_dict['date'] = temp.date
+        temp_dict['Avg Temp'] = temp.Avg_Temp
+        temp_dict['Low Temp'] = temp.Low_Temp
+        temp_dict['Hight Temp'] = temp.High_Temp
+        all_data.append(temp_dict)
+    
+    return jsonify(all_data)
+
+@app.route('/api/v1.0/<start>/<end>')
+def avg_temp_start_end(start, end):
+
+    # start the session
+    session = Session(engine)
+
+    # query to get the avg
+    results = session.query(Measurement.date, func.avg(Measurement.tobs).label('Avg_Temp'), func.min(Measurement.tobs).label('Low_Temp'), func.max(Measurement.tobs).label('High_Temp')).\
+        filter(Measurement.date >= start, Measurement.date <= end).\
         group_by(Measurement.date).all()
     
     session.close()
