@@ -172,19 +172,19 @@ def avg_temp_start_end(start, end):
     session = Session(engine)
 
     # query to get the avg
-    results = session.query(Measurement.date, func.avg(Measurement.tobs).label('Avg_Temp'), func.min(Measurement.tobs).label('Low_Temp'), func.max(Measurement.tobs).label('High_Temp')).\
-        filter(Measurement.date >= start, Measurement.date <= end).\
-        group_by(Measurement.date).all()
+    results = session.query(func.min(Measurement.date).label('From_Date'), func.max(Measurement.date).label('To_Date').label('To_Date'), func.avg(Measurement.tobs).label('Avg_Temp'), func.min(Measurement.tobs).label('Low_Temp'), func.max(Measurement.tobs).label('High_Temp')).\
+        filter(Measurement.date >= start, Measurement.date <= end)
     
     session.close()
 
     all_data = []
     for temp in results:
         temp_dict = {}
-        temp_dict['date'] = temp.date
+        temp_dict['From Date'] = temp.From_Date
+        temp_dict['To Date'] = temp.To_Date
         temp_dict['Avg Temp'] = temp.Avg_Temp
         temp_dict['Low Temp'] = temp.Low_Temp
-        temp_dict['Hight Temp'] = temp.High_Temp
+        temp_dict['High Temp'] = temp.High_Temp
         all_data.append(temp_dict)
     
     return jsonify(all_data)
