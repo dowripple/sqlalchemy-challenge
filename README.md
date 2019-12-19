@@ -16,3 +16,10 @@ This project looks at Hawaii weather data in a sqllite database.  The tools used
 images\precipitation.png       | The first chart in the assignment, it represents the last 12 months of precipitation data that is in the database, which is from 8/23/2016 to 8/23/2017
 images\station-histogram.png   | A historgram of temperature for the station with the most observations.  It represents the last 12 months of data for that station
 images\temperature.png         | A bar chart of average temperature from the same data used in the histogram chart. 
+
+### Charts!
+!['Image not available'](/Images/precipitation.png)
+
+!['Image not available'](/Images/station-histogram.png)
+
+!['Image not available'](/Images/temperature.png)
